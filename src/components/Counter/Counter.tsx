@@ -11,12 +11,10 @@ type CounterPropsType = {
     resetCount: () => void
 }
 
-export const Counter = (props: CounterPropsType) => {
-
+    export const Counter = (props: CounterPropsType) => {
     const increaseCountHandler = () => {
         props.increaseCount(props.MAX_VALUE, props.count)
     }
-
     const resetCountHandler = () => {
         props.resetCount()
     }

@@ -12,45 +12,33 @@ function App() {
         if (countAsString) {
             setCount(JSON.parse(countAsString))
         }
-    }, [])
 
+        let valueAsStringStart = localStorage.getItem('counterStart')
+        if (valueAsStringStart) {
+            setStartValue(JSON.parse(valueAsStringStart))
+        }
+
+        let valueAsStringMax = localStorage.getItem('counterMax')
+        if (valueAsStringMax) {
+            setMaxValue(JSON.parse(valueAsStringMax))
+        }
+
+    }, [])
     useEffect(()=>{
         localStorage.setItem('counterValue', JSON.stringify(count))
     }, [count])
-
-    useEffect(() => {
-        let valueAsString = localStorage.getItem('counterMax')
-        if (valueAsString) {
-            setMaxValue(JSON.parse(valueAsString))
-        }
-    }, [])
-
-    useEffect(() => {
-        let valueAsString = localStorage.getItem('counterStart')
-        if (valueAsString) {
-            setStartValue(JSON.parse(valueAsString))
-        }
-    }, [])
-
-
     const increaseCount = () => {
         if (count < maxValue && count >= startValue) {
             setCount(count + 1)
         }
     }
-    const resetCount = () => {
-        setCount(startValue)
-    }
-
-    const counterMaxValue = (newMaxValue: number) => {
+    const resetCount = () => setCount(startValue)
+    const counterSettings = (newMaxValue: number, newStartValue: number) => {
+        localStorage.setItem('counterMax', JSON.stringify(newMaxValue))
+        localStorage.setItem('counterStart', JSON.stringify(newStartValue))
+        setCount(newStartValue)
         setMaxValue(newMaxValue)
-    }
-    const counterStartValue = (newStartValue: number) => {
         setStartValue(newStartValue)
-    }
-    const counterSettings = () => {
-        localStorage.setItem('counterMax', JSON.stringify(maxValue))
-         localStorage.setItem('counterStart', JSON.stringify(startValue))
     }
 
     return (
@@ -58,8 +46,6 @@ function App() {
             <Settings
                 MAX_VALUE={maxValue}
                 START_VALUE={startValue}
-                counterMaxValue={counterMaxValue}
-                counterStartValue={counterStartValue}
                 counterSettings={counterSettings}
             />
             <Counter
@@ -70,7 +56,6 @@ function App() {
                 resetCount={resetCount}/>
         </div>
 
-    );
-}
+    );}
 
 export default App;
