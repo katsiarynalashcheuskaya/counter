@@ -13,6 +13,7 @@ function App() {
 
     const changeState = (state: PageStateType) => {
         setPageState(state);
+        console.log(pageState)
     }
 
     useEffect(()=>{
@@ -53,11 +54,6 @@ function App() {
         setMaxValue(newMaxValue)
         setStartValue(newStartValue)
     }
-  /*  const changeState = (newPageState: string) => {
-        /!* localStorage.setItem('pageState', JSON.stringify(newPageState))*!/
-        setPageState(newPageState)
-
-    }*/
 
     return (
         <div className={s.App}>

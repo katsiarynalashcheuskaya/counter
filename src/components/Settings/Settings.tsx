@@ -14,9 +14,7 @@ type SettingsPropsType = {
 
 export const Settings = (props: SettingsPropsType) => {
     const [newMaxValue, setNewMaxValue] = useState<number>(props.MAX_VALUE)
-    const [newStartValue, setStartValue] = useState<number>(props.START_VALUE)
-    const [error, setError] = useState<string>('')
-
+    const [newStartValue, setNewStartValue] = useState<number>(props.START_VALUE)
 
     const changeStatus = () => {
         props.changeState('settings')
@@ -24,18 +22,25 @@ export const Settings = (props: SettingsPropsType) => {
 
     const onChangeMaxValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
         if (newMaxValue <= newStartValue) {
-            props.changeState('error')}
-        else {
             setNewMaxValue(JSON.parse(e.currentTarget.value))
-            changeStatus();}
+            props.changeState('error')
+            console.log(1)
+        } else if (newMaxValue > newStartValue) {
+            setNewMaxValue(JSON.parse(e.currentTarget.value))
+            changeStatus();
+            console.log(2)
+        } else props.changeState('error')
     }
 
     const onChangeStartValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        if (newStartValue < 0 || newStartValue >= newMaxValue) {
+        if (newStartValue < newMaxValue) {
+            setNewStartValue(JSON.parse(e.currentTarget.value))
+            changeStatus();
+        } else if (newStartValue < 0 || newStartValue >= newMaxValue) {
+            setNewStartValue(JSON.parse(e.currentTarget.value))
             props.changeState('error')
-        } else {
-            setStartValue(JSON.parse(e.currentTarget.value))
-            changeStatus();}
+        } else {setNewStartValue(JSON.parse(e.currentTarget.value))
+        changeStatus();}
     }
 
     const setCountHandler = () => {
@@ -46,12 +51,12 @@ export const Settings = (props: SettingsPropsType) => {
     useEffect(() => {
         let valueAsStringMax = localStorage.getItem('counterStart')
         if (valueAsStringMax) {
-            setStartValue(JSON.parse(valueAsStringMax))
+            setNewStartValue(JSON.parse(valueAsStringMax))
         }
 
-        let valueAsStringString = localStorage.getItem('counterMax')
-        if (valueAsStringString) {
-            setNewMaxValue(JSON.parse(valueAsStringString))
+        let valueAsStringStart = localStorage.getItem('counterMax')
+        if (valueAsStringStart) {
+            setNewMaxValue(JSON.parse(valueAsStringStart))
         }
 
     }, [])

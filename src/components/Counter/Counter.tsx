@@ -16,21 +16,15 @@ type CounterPropsType = {
 
     export const Counter = (props: CounterPropsType) => {
 
-     /*   useEffect(()=>{
-            let valuePageStateAsString = localStorage.getItem('pageState')
-            if (valuePageStateAsString !== null) {
-                props.changeState(valuePageStateAsString === 'true')
-            }})*/
-
     const increaseCountHandler = () => {
          props.increaseCount(props.MAX_VALUE, props.count)
     }
-
     const resetCountHandler = () => {
         props.resetCount()
     }
 
-    const spanSet = (props.pageState === 'counter') ? props.count : (props.pageState === 'settings') ? 'enter values and press "set"' : 'Incorrect value!'
+    const spanSet = (props.pageState === 'counter') ? props.count
+        : (props.pageState === 'settings') ? 'enter values and press "set"' : 'Incorrect value!'
         const spanClass = (props.pageState === 'counter') ? s.spanCounter + ((props.count === props.MAX_VALUE) ? ' ' + s.red : '')
                 : (props.pageState === 'settings') ? s.spanSettings
                 : (props.pageState === 'error'? s.redSpan
