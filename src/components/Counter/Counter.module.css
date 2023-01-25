@@ -18,13 +18,30 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.spanCounter {
     font-size: 70px;
     font-weight: bold;
     color: lightskyblue;
+
+}
+
+.spanSettings {
+    font-size: 15px;
+    font-weight: bold;
+    color: lightskyblue;
+
+}
+
+.redSpan {
+    font-size: 20px;
+    font-weight: bold;
+    color:red;
 }
 
 .red {
-    color:red;
+    color: red;
 }
 
 .wrapper {

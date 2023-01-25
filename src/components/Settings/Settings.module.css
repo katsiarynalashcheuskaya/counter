@@ -28,9 +28,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
-
 }
+
 .spans span {
     padding-bottom: 5px;
     padding-top: 5px;
@@ -55,5 +54,4 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
-
 }
