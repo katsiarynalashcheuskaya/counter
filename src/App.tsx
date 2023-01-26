@@ -3,75 +3,64 @@ import s from './App.module.css';
 import {Counter} from "./components/Counter/Counter";
 import {Settings} from "./components/Settings/Settings";
 
-export type PageStateType = 'settings' | 'counter' | 'error'
+export type StateType = {
+    count: number,
+    maxValue: number,
+    startValue: number,
+    page: PageType
+}
+
+export type PageType = 'settings' | 'counter' | 'error'
 
 function App() {
-    const [count, setCount] = useState<number>(0);
-    const [maxValue, setMaxValue] = useState<number>(10)
-    const [startValue, setStartValue] = useState<number>(0)
-    const [pageState, setPageState] = useState<PageStateType>('counter')
-
-    const changeState = (state: PageStateType) => {
-        setPageState(state);
-        console.log(pageState)
-    }
-
-    useEffect(()=>{
-        let countAsString = localStorage.getItem('counterValue')
-        if (countAsString) {
-            setCount(JSON.parse(countAsString))
-        }
-
-        let valueAsStringStart = localStorage.getItem('counterStart')
-        if (valueAsStringStart) {
-            setStartValue(JSON.parse(valueAsStringStart))
-        }
-
-        let valueAsStringMax = localStorage.getItem('counterMax')
-        if (valueAsStringMax) {
-            setMaxValue(JSON.parse(valueAsStringMax))
-        }
-
-    }, [])
-    useEffect(()=>{
-        localStorage.setItem('counterValue', JSON.stringify(count))
-    }, [count])
-
-    useEffect(()=>{
-        localStorage.setItem('pageState', JSON.stringify(pageState))
-    }, [pageState])
+    const [state, setState] = useState<StateType>({count: 0, maxValue: 10, startValue: 0, page: 'counter'})
 
     const increaseCount = () => {
-        if (count < maxValue && count >= startValue) {
-            setCount(count + 1)
+        if (state.count < state.maxValue) {
+            setState({...state, count: state.count + 1})
         }
     }
-    const resetCount = () => setCount(startValue)
-    const counterSettings = (newMaxValue: number, newStartValue: number) => {
-        localStorage.setItem('counterMax', JSON.stringify(newMaxValue))
-        localStorage.setItem('counterStart', JSON.stringify(newStartValue))
-        setCount(newStartValue)
-        setMaxValue(newMaxValue)
-        setStartValue(newStartValue)
+    const resetCount = () => setState({...state, count: state.startValue})
+    const changeStartValue = (start: number) => {
+        if (start >= state.maxValue || start < 0 || state.maxValue < 1) {
+            setState({...state, startValue: start, page: 'error'})
+        } else {
+            setState({...state, startValue: start, page: 'settings'})
+        }
     }
+    const changeMaxValue = (max: number) => {
+        if (max <= state.startValue || max < 1 || state.startValue < 0) {
+            setState({...state, maxValue: max, page: 'error'})
+        } else {
+            setState({...state, maxValue: max, page: 'settings'})
+        }
+    }
+    const counterSettings = () => {
+        localStorage.setItem('counterState', JSON.stringify({
+            startValue: state.startValue, maxValue: state.maxValue, count: state.startValue, page: 'counter'
+        }))
+        setState({...state, count: state.startValue, page: 'counter'})
+    }
+
+    useEffect(()=>{
+        const localStorageData = localStorage.getItem('counterState')
+        if(localStorageData) {
+            setState(JSON.parse(localStorageData))
+        }
+    },[])
 
     return (
         <div className={s.App}>
             <Settings
-                MAX_VALUE={maxValue}
-                START_VALUE={startValue}
+                state={state}
                 counterSettings={counterSettings}
-                changeState = {changeState}
-                pageState = {pageState}
+                changeStartValue = {changeStartValue}
+                changeMaxValue={changeMaxValue}
             />
             <Counter
-                MAX_VALUE={maxValue}
-                START_VALUE={startValue}
-                count={count}
+                state={state}
                 increaseCount={increaseCount}
                 resetCount={resetCount}
-                changeState = {changeState}
-                pageState = {pageState}
             />
         </div>
 
