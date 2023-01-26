@@ -14,11 +14,19 @@ type SettingsPropsType = {
 export const Settings = (props: SettingsPropsType) => {
 
     const onChangeMaxValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        props.changeMaxValue(+e.currentTarget.value)
-    }
+        if (e.target.value.length <= 5) {
+            props.changeMaxValue(+e.currentTarget.value);
+        } else {
+            return;
+    }}
+
     const onChangeStartValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        props.changeStartValue(+e.currentTarget.value)
-    }
+        if (e.target.value.length <= 5) {
+            props.changeStartValue(+e.currentTarget.value);
+        } else {
+            return;
+        }}
+
     const setCountHandler = () => {
         props.counterSettings()
     }
@@ -36,14 +44,17 @@ export const Settings = (props: SettingsPropsType) => {
                             id={'settings-max-value-input'}
                             value={props.state.maxValue}
                             onChange={onChangeMaxValueHandler}
-                            error={(props.state.maxValue <= 0) || (props.state.maxValue <= props.state.startValue)}/>
+                            error={(props.state.maxValue <= 0) || (props.state.maxValue <= props.state.startValue)}
+
+                        />
                     </div>
                     <div>
                         <Input
                             id={'settings-start-value-input'}
                             value={props.state.startValue}
                             onChange={onChangeStartValueHandler}
-                            error={(props.state.startValue < 0) || (props.state.startValue >= props.state.maxValue)}/>
+                            error={(props.state.startValue < 0) || (props.state.startValue >= props.state.maxValue)}
+                            />
                     </div>
                 </div>
             </div>
