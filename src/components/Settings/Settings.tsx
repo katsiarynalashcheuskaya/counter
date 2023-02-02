@@ -1,8 +1,8 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React, {ChangeEvent} from 'react';
 import s from './Settings.module.css'
 import Button from "../Button/Button";
 import Input from "../Input/Input";
-import {StateType} from "../../App";
+import {StateType} from "../../store/counterReducer";
 
 type SettingsPropsType = {
    state: StateType
@@ -15,18 +15,16 @@ export const Settings = (props: SettingsPropsType) => {
 
     const onChangeMaxValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.value.length <= 5) {
-            props.changeMaxValue(+e.currentTarget.value);
+            props.changeMaxValue(parseInt(e.currentTarget.value,10));
         } else {
             return;
     }}
-
     const onChangeStartValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.value.length <= 5) {
-            props.changeStartValue(+e.currentTarget.value);
+            props.changeStartValue(Math.round(+e.currentTarget.value));
         } else {
             return;
         }}
-
     const setCountHandler = () => {
         props.counterSettings()
     }

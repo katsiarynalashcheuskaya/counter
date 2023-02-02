@@ -1,7 +1,8 @@
 import React from 'react';
 import s from './Counter.module.css'
 import Button from "../Button/Button";
-import {StateType} from "../../App";
+import {StateType} from "../../store/counterReducer";
+
 
 
 type CounterPropsType = {
