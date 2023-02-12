@@ -7,11 +7,15 @@ import counterReducer, {
     changeStartValueAC, counterSettingsAC,
     increaseCountAC,
     initialState,
-    resetCountAC
+    resetCountAC, StateType
 } from "./store/counterReducer";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootStateType} from "./store/store";
 
 function App() {
-    const [state, stateDispatch] = useReducer(counterReducer,initialState)
+    /*const [state, stateDispatch] = useReducer(counterReducer,initialState)*/
+    const state = useSelector<AppRootStateType, StateType>(state=>state.counter)
+    const dispatch = useDispatch();
 
     const increaseCount = () => {
         /*localStorage.setItem('counterValue', JSON.stringify({...state, count: state.count+1}))
@@ -19,11 +23,11 @@ function App() {
             setState({...state, count: state.count + 1})
 
         }*/
-        stateDispatch(increaseCountAC())
+        dispatch(increaseCountAC())
     }
-    const resetCount = () => {stateDispatch(resetCountAC())
+    const resetCount = () => {dispatch(resetCountAC())
     /*setState({...state, count: state.startValue})*/}
-    const changeStartValue = (start: number) => {stateDispatch(changeStartValueAC(start))
+    const changeStartValue = (start: number) => {dispatch(changeStartValueAC(start))
     /*{
         if (start >= state.maxValue || start < 0 || state.maxValue < 1) {
             setState({...state, startValue: start, page: 'error'})
@@ -31,7 +35,7 @@ function App() {
             setState({...state, startValue: start, page: 'settings'})
         }
     }*/}
-    const changeMaxValue = (max: number) => {stateDispatch(changeMaxValueAC(max))
+    const changeMaxValue = (max: number) => {dispatch(changeMaxValueAC(max))
         /*if (max <= state.startValue || max < 1 || state.startValue < 0) {
             setState({...state, maxValue: max, page: 'error'})
         } else {
@@ -39,7 +43,7 @@ function App() {
         }*/
 
     }
-    const counterSettings = () => { stateDispatch(counterSettingsAC())
+    const counterSettings = () => { dispatch(counterSettingsAC())
         /*localStorage.setItem('counterState', JSON.stringify({
             startValue: state.startValue, maxValue: state.maxValue, count: state.startValue, page: 'counter'
         }))
